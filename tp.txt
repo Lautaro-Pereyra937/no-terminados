@@ -1,0 +1,202 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
+namespace Project1
+{
+    public class Game1 : Game
+    {
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
+
+        Texture2D Texturacaballo;
+        Sprite spritecaballofrente;
+        Entrenador ash;
+        public Game1()
+        {
+            _graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+            IsMouseVisible = true;
+        }
+
+        protected override void Initialize()
+        {
+            // TODO: Add your initialization logic here
+
+            base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            Texturacaballo = Content.Load<Texture2D>("caballo");
+            spritecaballofrente = new Sprite(Texturacaballo, Vector2.Zero);
+
+            Pokemon[] equipo1 = new Pokemon[]
+            {
+                new Pokemon("Pikachu", 50, 150, 150, 90, 55, 110, 50, 90,spritecaballofrente),
+                new Pokemon("Charizard", 55, 180,180, 84, 78, 109, 85, 100,spritecaballofrente),
+                new Pokemon("Blastoise", 81, 175,175, 83, 100, 85, 105, 78,spritecaballofrente),
+                new Pokemon("Venusaur", 51, 170,170, 82, 83, 100, 100, 80,spritecaballofrente),
+                new Pokemon("Snorlax", 48, 160,160, 110, 65, 55, 55, 45,spritecaballofrente),
+                new Pokemon("Gengar", 50, 130,130, 65, 60, 130, 110, 110,spritecaballofrente)
+            };
+
+            ash = new Entrenador("Ash",150,equipo1);
+
+            // TODO: use this.Content to load your game content here
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+
+            // TODO: Add your update logic here
+
+            base.Update(gameTime);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+
+            Rectangle mostrarpokemon;
+
+            for(int i = 0;i <= 5;i ++)
+            {
+                mostrarpokemon = new Rectangle(50+(i*70),150,64,64);
+                _spriteBatch.Draw(ash.equipo[i].spritefrente.texture, mostrarpokemon, Color.White);
+            }
+            // TODO: Add your drawing code here
+            _spriteBatch.End();
+            base.Draw(gameTime);
+        }
+    }
+}
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Text;
+using System.Threading.Tasks;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace Project1
+{
+    internal class Sprite
+    {
+        public Texture2D texture;
+
+        public Vector2 position;
+
+        public Sprite(Texture2D texture, Vector2 position)
+        {
+            this.texture = texture;
+            this.position = position;
+        }
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Project1
+{
+    internal class Entrenador
+    {
+        // propiedades
+
+        public string nombre { get; set; }
+        public int pokedolares { get; set; }
+        public Pokemon[] equipo { get; set; }
+
+        //constructor
+
+        public Entrenador(string nombre, int pokedolares, Pokemon[] equipo)
+        { 
+            this.nombre = nombre;
+            this.pokedolares = pokedolares;
+            this.equipo = equipo;
+        }
+
+        //funciones
+
+        //funcion dame nivel recorre la lista de pokemons y suma todos sus niveles
+
+        public bool perdio()
+        {
+            // si perdio es verdadero si no perdio es falso
+            int contador = 0;
+            for (int i = 0; i <= 5; i++)
+            {
+                if (equipo[i].psa > 0)
+                {
+                    contador++;
+                }
+            }
+            if (contador > 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Project1
+{
+    internal class Pokemon
+    {
+
+        public string nombre { get; set; }
+        public int nivel { get; set; }
+
+        public int ps { get; set; }
+        public int psa { get; set; }
+
+        public int ataque { get; set; }
+
+        public int defensa { get; set; }
+
+        public int ae { get; set; }
+
+        public int de { get; set; }
+
+        public int velocidad { get; set; }
+
+        public Sprite spritefrente { get; set; }
+
+        // Constructor
+        public Pokemon(string nombre, int nivel, int ps, int psa, int ataque, int defensa, int ae, int de, int velocidad, Sprite spritefrente)
+        {
+            this.nombre = nombre;
+            this.nivel = nivel;
+            this.ps = ps;
+            this.psa = psa;
+            this.ataque = ataque;
+            this.defensa = defensa;
+            this.ae = ae;
+            this.de = de;
+            this.velocidad = velocidad;
+            this.spritefrente = spritefrente;
+        }
+    }
+}
