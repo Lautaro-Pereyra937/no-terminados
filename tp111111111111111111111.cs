@@ -60,3 +60,67 @@ void ejercicio3()
 
     }
 }
+
+void ejercicio4()
+{
+    AccionTexto acciones = new AccionTexto("", "","");
+    
+    acciones.guardar_accion("escribir", "perritos","12:00");
+    acciones.guardar_accion("leer", "gatitos", "12:00");
+    
+    Console.WriteLine("Ingrese 1 para hacer Control Z ");
+    int opcion = Convert.ToInt32(Console.ReadLine());
+    
+    if(opcion == 1)
+    {
+        acciones.deshacer();
+    }
+}
+
+//clase acciontexto
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp2
+{
+    internal class AccionTexto
+    {
+        public string tipoaccion { get; set; }
+
+        public string contenido { get; set; }
+
+        public string fechahora { get; set; }
+
+        public AccionTexto(string tipoaccion, string contenido, string fechahora)
+        {
+            this.tipoaccion = tipoaccion;
+
+            this.contenido = contenido;
+
+            this.fechahora = fechahora;
+        }
+
+        Stack<AccionTexto> historial = new Stack<AccionTexto>();
+
+        public void guardar_accion(string tipoaccion, string contenido, string fechahora)
+        {
+            AccionTexto guardado = new AccionTexto(tipoaccion,contenido,fechahora);
+            historial.Push(guardado);
+        }
+
+        public void deshacer()
+        {
+            if (historial.TryPop(out AccionTexto ultima))
+            {
+                Console.WriteLine($"Deshecho: {ultima.tipoaccion} {ultima.contenido} {ultima.fechahora}");
+            }
+            else
+            {
+                Console.WriteLine("No hay acciones para deshacer.");
+            }
+        }
+    }
+}
