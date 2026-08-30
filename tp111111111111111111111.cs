@@ -52,12 +52,62 @@ ejercicio2();
 void ejercicio3()
 {
     Console.WriteLine("Ingrese un mensaje como este { [ ( a + b ) ] } (similar)");
-
-    bool salida = false;
-
-    foreach()
+    string palabra = Console.ReadLine();
+    Stack<string> Palabra_ingresada = new Stack<string>();
+    Palabra_ingresada.Push(palabra);
+    
+    bool parentesis_correcion1 = false;
+    bool parentesis_correcion2 = false;
+    bool corchete_correcion1 = false;
+    bool corchete_correcion2 = false;
+    bool llaves_correcion1 = false;
+    bool llaves_correcion2 = false;
+    
+    foreach(char Letra in palabra)
     {
+        if (c == '(')
+        {
+            parentesis_correcion1 = true;
+        }
+        if (c == ')' && parentesis_correcion1 == true)
+        {
+            parentesis_correcion2 = true;
+        }
+    }
+    foreach(char Letra2 in palabra)
+    {
+        if(Letra2 == '[')
+        {
+            corchete_correcion1 = true;
+        }
+        if(Letra2 == ']' && corchete_correcion1 == true)
+        {
+            corchete_correcion2 = true;
+        }
+    }
+    foreach(char Letra3 in palabra)
+    {
+        if(Letra3 == '{')
+        {
+           llaves_correcion1 = true;
+        }
+        if(Letra3 == '}' && llaves_correcion1 == true)
+        {
+            llaves_correcion2 = true;
+        }
+    }
 
+    if(parentesis_correcion2 == true && corchete_correcion2 == true && llaves_correcion2 == true)
+    {
+         Console.WriteLine("El mensaje no esta bien redactado");
+         Palabra_ingresada.Peek();
+         return true;
+    }
+    else
+    {
+         Console.WriteLine("El mensaje no esta bien redactado");
+         Palabra_ingresada.Peek();
+         return false;
     }
 }
 
@@ -77,6 +127,75 @@ void ejercicio4()
     }
 }
 
+void ejercicio5()
+{
+
+}
+
+void ejercicio6()
+{
+   procesador procesar = new procesador();
+
+   Tarea tarea1 = new Tarea(1,"Leer","Muy importante",30);
+   Tarea tarea2 = new Tarea(2,"Escribir","poco importante",10);
+
+   procesar.guardar_tarea(tarea1);
+   procesar.guardar_tarea(tarea2);
+    
+   procesar.atender_tarea();
+}
+
+//clase Tarea
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp2
+{
+  internal class Tarea
+  {
+      public int id { get; set; }
+
+      public string titulo { get; set; }
+
+      public string prioridad { get; set; }
+
+      public int estimacion_minutos { get; set; }
+      
+      public Tarea(int id, string titulo, string prioridad, int estimacion_minutos)
+      {
+            this.id = id;
+
+            this.titulo = titulo;
+
+            this.prioridad = prioridad;
+
+            this.estimacion_minutos = estimacion_minutos;
+      }
+}
+    
+internal class procesador
+{
+  Stack<Tarea> Tareas = new Stack<Tarea>();
+  public void guardar_tarea(Tarea nueva_tarea)
+  {
+      Tareas.Push(guardada);
+  }
+
+  public void atender_tarea()
+  {
+      if(Tareas.TryPop(out Tarea tarea_atendida))
+      {
+           Console.WriteLine($"Vamos a trabajar con {tarea_atendida.titulo}");
+      }
+      else
+      {
+           Console.WriteLine("No hay tareas para atender");
+      }
+  }
+}
 //clase acciontexto
 using System;
 using System.Collections.Generic;
