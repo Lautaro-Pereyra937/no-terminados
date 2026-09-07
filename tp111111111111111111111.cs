@@ -1,130 +1,122 @@
-﻿void ejercicio1()
+Stack<char> invertida = new Stack<char>();
+
+Console.WriteLine("Ingrese una palabra/frase");
+string palabra = Console.ReadLine();
+
+string nueva = "";
+
+foreach (char j in palabra)
 {
-    Stack<char> invertida = new Stack<char>();
-
-    Console.WriteLine("Ingrese una palabra/frase");
-    string palabra = Console.ReadLine();
-
-    string nueva = "";
-
-    foreach (char j in palabra)
-    {
-        invertida.Push(j);
-    }
-
-    for (int i = 0; 0 < invertida.Count; i++)
-    {
-        nueva += invertida.Pop();
-    }
-    Console.WriteLine($"Palabra invertida: {nueva}");
+    invertida.Push(j);
 }
-ejercicio1();
 
-void ejercicio2()
+for (int i = 0; 0 < invertida.Count; i++)
 {
-    bool parar = false;
-    Stack<string> historial = new Stack<string>();
-    historial.Push("google.com");
-    historial.Push("github.com");
-    historial.Push("stackoverflow.com");
+    nueva += invertida.Pop();
+}
+Console.WriteLine($"Palabra invertida: {nueva}");
 
+
+bool parar = false;
+Stack<string> historial = new Stack<string>();
+historial.Push("google.com");
+historial.Push("github.com");
+historial.Push("stackoverflow.com");
+
+Console.WriteLine("Desea volver atras??(1 si 2 no)");
+int respuesta = Convert.ToInt32(Console.ReadLine());
+
+while(parar)
+{
     Console.WriteLine("Desea volver atras??(1 si 2 no)");
-    int respuesta = Convert.ToInt32(Console.ReadLine());
-
-    
-        if(respuesta == 1)
-        {
-            if(historial.TryPop(out string paginaAnterior))
-            {
-                Console.WriteLine($"URL actual: {historial.Peek()}");
-                Console.WriteLine($"Regresando a: {paginaAnterior}");
-                parar = true;
-            }
-        }
-        else if(respuesta == 2)
+    respuesta = Convert.ToInt32(Console.ReadLine());
+    if(respuesta == 1)
+    {
+        if(historial.TryPop(out string paginaAnterior))
         {
             Console.WriteLine($"URL actual: {historial.Peek()}");
+            Console.WriteLine($"Regresando a: {paginaAnterior}");
         }
-    
+        else
+        {
+            Console.WriteLine("Ya no se puede volver atras");
+        }
+    }
+    else if(respuesta == 2)
+    {
+        Console.WriteLine($"URL actual: {historial.Peek()}");
+        parar = true;
+    }
 }
-ejercicio2();
 
-void ejercicio3()
+Console.WriteLine("Ingrese un mensaje como este { [ ( a + b ) ] } (similar)");
+string Palabra = Console.ReadLine();
+Stack<string> TextoRandom = new Stack<string>();
+TextoRandom.Push(Palabra);
+bool VerificarTexto(string ejemplo)
 {
-    Console.WriteLine("Ingrese un mensaje como este { [ ( a + b ) ] } (similar)");
-    string palabra = Console.ReadLine();
-    Stack<string> Palabra_ingresada = new Stack<string>();
-    Palabra_ingresada.Push(palabra);
-    
-    bool parentesis_correcion1 = false;
-    bool parentesis_correcion2 = false;
-    bool corchete_correcion1 = false;
-    bool corchete_correcion2 = false;
-    bool llaves_correcion1 = false;
-    bool llaves_correcion2 = false;
-    
-    foreach(char Letra in palabra)
+    bool parentesis = false;
+    bool parentesisbien = false;
+    bool corchete = false;
+    bool corchetebien = false;
+    bool llaves = false;
+    bool llavesbien = false;
+    foreach(char letra in ejemplo)
     {
-        if (c == '(')
+        if(letra == '(')
         {
-            parentesis_correcion1 = true;
+            parentesis = true;
         }
-        if (c == ')' && parentesis_correcion1 == true)
+        if(letra == ')' && parentesis == true)
         {
-            parentesis_correcion2 = true;
+            parentesisbien = true;
         }
     }
-    foreach(char Letra2 in palabra)
+    foreach(char letra1 in ejemplo)
     {
-        if(Letra2 == '[')
+        if(letra1 == '[')
         {
-            corchete_correcion1 = true;
+            corchete = true;
         }
-        if(Letra2 == ']' && corchete_correcion1 == true)
+        if(letra1 == ']' && corchete == true)
         {
-            corchete_correcion2 = true;
+            corchetebien = true;
         }
     }
-    foreach(char Letra3 in palabra)
+    foreach(char letra2 in ejemplo)
     {
-        if(Letra3 == '{')
+        if(letra2 == '{')
         {
-           llaves_correcion1 = true;
+           llaves = true;
         }
-        if(Letra3 == '}' && llaves_correcion1 == true)
+        if(letra2 == '}' && llaves == true)
         {
-            llaves_correcion2 = true;
+            llavesbien = true;
         }
     }
-
-    if(parentesis_correcion2 == true && corchete_correcion2 == true && llaves_correcion2 == true)
+    if (llavesbien == true && corchetebien == true && parentesisbien == true)
     {
-         Console.WriteLine("El mensaje no esta bien redactado");
-         Palabra_ingresada.Peek();
-         return true;
+        return true;
     }
     else
     {
-         Console.WriteLine("El mensaje no esta bien redactado");
-         Palabra_ingresada.Peek();
-         return false;
+        return false;
     }
 }
+Console.WriteLine(VerificarTexto(TextoRandom.Peek()));
 
-void ejercicio4()
+
+AccionTexto acciones = new AccionTexto("", "","");
+
+acciones.guardar_accion("escribir", "perritos","12:00");
+acciones.guardar_accion("leer", "gatitos", "12:00");
+
+Console.WriteLine("Ingrese 1 para hacer Control Z ");
+int opcion = Convert.ToInt32(Console.ReadLine());
+
+if(opcion == 1)
 {
-    AccionTexto acciones = new AccionTexto("", "","");
-    
-    acciones.guardar_accion("escribir", "perritos","12:00");
-    acciones.guardar_accion("leer", "gatitos", "12:00");
-    
-    Console.WriteLine("Ingrese 1 para hacer Control Z ");
-    int opcion = Convert.ToInt32(Console.ReadLine());
-    
-    if(opcion == 1)
-    {
-        acciones.deshacer();
-    }
+    acciones.deshacer();
 }
 
 void ejercicio5()
