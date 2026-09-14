@@ -26,7 +26,7 @@ namespace Project1
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        Vector2 posicionCamara = new Vector2.Zero;
+        Vector2 posicionCamara = Vector2.Zero;
 
         float velocidadCamara = 20;
 
@@ -36,7 +36,7 @@ namespace Project1
         private EstadoJuego estadoActual = EstadoJuego.IngresandoNombre;
         string NombreRey = "";
 
-        SpriteFont fuenteJuego;
+        SpriteFont FuenteJuego;
 
         Texture2D texturafondoMenu;
         Sprite spritefondoMenu;
@@ -57,27 +57,24 @@ namespace Project1
             MouseState estadoMouse = Mouse.GetState();
             Window.TextInput += (sender, e) =>
             {
-                if(estadoMouse.LeftButton == ButtonState.Pressed)
+                if (e.Key == Keys.Back && NombreRey.Length > 0)
                 {
-                    if (e.Key == Keys.Back && NombreRey.Length > 0)
-                    {
-                        NombreRey = NombreRey.Substring(0, NombreRey.Length, 1);
-                    }
-                    else if (e.Key == Keys.Enter && NombreRey.Length > 0)
-                    {
-                        estadoActual = EstadoJuego.MenuPrincipal;
-                    }
-                    else if (e.Key != Keys.Enter && e.Key != Keys.Back)
-                    {
-                        NombreRey += e.KeyChar;
-                    }
+                    NombreRey = NombreRey.Substring(0, NombreRey.Length - 1);
                 }
-            }
+                else if (e.Key == Keys.Enter && NombreRey.Length > 0)
+                {
+                    estadoActual = EstadoJuego.MenuPrincipal;
+                }
+                else if (e.Key != Keys.Enter && e.Key != Keys.Back)
+                {
+                    NombreRey += e.Character;
+                }
+            };
         }
 
         protected override void LoadContent()
         {
-            FuenteLetra = Content.Load<SpriteFont>("FuenteLetra");
+            FuenteJuego = Content.Load<SpriteFont>("FuenteJuego");
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             texturafondoMenu = Content.Load<Texture2D>("Menu");
@@ -86,7 +83,7 @@ namespace Project1
             texturaImperio = Content.Load<Texture2D>("Imperio");
             spriteImperio = new Sprite(texturaImperio, Vector2.Zero);
 
-            fuenteJuego = Content.Load<SpriteFont>("FuenteJuego");
+            FuenteJuego = Content.Load<SpriteFont>("FuenteJuego");
         }
 
         protected override void Update(GameTime gameTime)
@@ -149,28 +146,28 @@ namespace Project1
 
             if (estadoActual == EstadoJuego.IngresandoNombre)
             {
-                spriteIngresoNombre.Draw(_spriteBatch);
-                _spriteBatch.DrawString(FuenteLetra, NombreRey, new Vector2(200, 250), Color.White);
+                spritefondoMenu.Draw(_spriteBatch);
+                _spriteBatch.DrawString(FuenteJuego, NombreRey, new Vector2(200, 250), Color.White);
             }
             else if (estadoActual == EstadoJuego.MenuPrincipal)
             {
                 spritefondoMenu.Draw(_spriteBatch);
-                _spriteBatch.DrawString(fuenteJuego, "NUEVA PARTIDA", new Vector2(100, 200), Color.Yellow);
-                _spriteBatch.DrawString(fuenteJuego, "CARGAR PARTIDA", new Vector2(100, 270), Color.White);
-                _spriteBatch.DrawString(fuenteJuego, "SALIR", new Vector2(100, 340), Color.Red);
+                _spriteBatch.DrawString(FuenteJuego, "NUEVA PARTIDA", new Vector2(100, 200), Color.Yellow);
+                _spriteBatch.DrawString(FuenteJuego, "CARGAR PARTIDA", new Vector2(100, 270), Color.White);
+                _spriteBatch.DrawString(FuenteJuego, "SALIR", new Vector2(100, 340), Color.Red);
             }
             else if (estadoActual == EstadoJuego.Jugando)
             {
                 _spriteBatch.End();
 
-                _spriteBatch.Begin(transformMatrix: Matrix.CreateTranslation(new Vector3(posicionCamara, 0)));
+                _spriteBatch.Begin(transformMatrix: Matrix.CreateTranslation(new Microsoft.Xna.Framework.Vector3(posicionCamara, 0)));
                 spriteImperio.Draw(_spriteBatch);
                 _spriteBatch.End();
 
                 _spriteBatch.Begin();
-                _spriteBatch.DrawString(fuenteJuego, "Oro", partidaActual.datosJugador.Oro, new Vector2(100, 200), Color.Yellow);
-                _spriteBatch.DrawString(fuenteJuego, "Reputacion", partidaActual.datosJugador.Reputacion, new Vector2(100, 270), Color.White);
-                _spriteBatch.DrawString(fuenteJuego, "Turno", partidaActual.datosJugador.Turno, new Vector2(100, 340), Color.Red);
+                _spriteBatch.DrawString(FuenteJuego, "Oro: " + partidaActual.datosJugador.Oro.ToString(), new Vector2(100, 200), Color.Yellow);
+                _spriteBatch.DrawString(FuenteJuego, "Reputacion: " + partidaActual.datosJugador.Reputacion.ToString(), new Vector2(100, 270), Color.White);
+                _spriteBatch.DrawString(FuenteJuego, "Turno: " + partidaActual.Turno.ToString(), new Vector2(100, 340), Color.Red);
             }
 
             _spriteBatch.End();
