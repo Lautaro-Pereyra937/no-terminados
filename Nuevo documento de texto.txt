@@ -23,7 +23,6 @@ namespace Project1
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        // CORREGIDO: Sin el "new"
         Vector2 posicionCamara = Vector2.Zero;
 
         float velocidadCamara = 20;
@@ -59,7 +58,6 @@ namespace Project1
 
                 if (estadoMouse.LeftButton == ButtonState.Pressed)
                 {
-                    // CORREGIDO: Lógica de Substring para borrar el último carácter
                     if (e.Key == Keys.Back && NombreRey.Length > 0)
                     {
                         NombreRey = NombreRey.Substring(0, NombreRey.Length - 1);
@@ -73,14 +71,13 @@ namespace Project1
                         NombreRey += e.KeyChar;
                     }
                 }
-            }; // CORREGIDO: Punto y coma agregado aquí
+            };
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // CORREGIDO: Dejamos una sola carga de la fuente
             FuenteJuego = Content.Load<SpriteFont>("FuenteJuego");
 
             texturafondoMenu = Content.Load<Texture2D>("Menu");
@@ -150,16 +147,13 @@ namespace Project1
             }
             else if (estadoActual == EstadoJuego.Jugando)
             {
-                // Cerramos el batch inicial para abrir el batch con la matriz de la cámara
                 _spriteBatch.End();
 
                 _spriteBatch.Begin(transformMatrix: Matrix.CreateTranslation(new Vector3(posicionCamara, 0)));
                 spriteImperio.Draw(_spriteBatch);
                 _spriteBatch.End();
 
-                // Volvemos a abrir un batch normal para la interfaz de usuario (HUD) estática
                 _spriteBatch.Begin();
-                // NOTA: Asegúrate de que partidaActual.datosJugador.Oro (etc) sean strings o usa .ToString() si son números
                 _spriteBatch.DrawString(FuenteJuego, "Oro: " + partidaActual.datosJugador.Oro.ToString(), new Vector2(100, 200), Color.Yellow);
                 _spriteBatch.DrawString(FuenteJuego, "Reputacion: " + partidaActual.datosJugador.Reputacion.ToString(), new Vector2(100, 270), Color.White);
                 _spriteBatch.DrawString(FuenteJuego, "Turno: " + partidaActual.datosJugador.Turno.ToString(), new Vector2(100, 340), Color.Red);
